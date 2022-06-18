@@ -1,12 +1,25 @@
+import logging
+
+logging.basicConfig(
+    filename="/tmp/chargerate.log",
+    format='%(asctime)s %(levelname)s %(message)s',
+    filemode='w',
+    force=True)
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+CHARGE_RATE_PATH = "/sys/devices/pci0000:00/0000:00:14.3/PNP0C09:00/VLV0100:00/hwmon/hwmon5/maximum_battery_charge_rate"
+
+
 class Plugin:
-    # A normal method. It can be called from JavaScript using call_plugin_function("method_1", argument1, argument2)
-    async def method_1(self, *args):
-        pass
-
-    # A normal method. It can be called from JavaScript using call_plugin_function("method_2", argument1, argument2)
-    async def method_2(self, *args):
-        pass
-
-    # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
-    async def _main(self):
-        pass
+    async def set_charge_current(self, current=250):
+        logger.debug(f"Set charge current {current}")
+        try:
+            with open(CHARGE_RATE_PATH, "w") as f:
+                f.write(str(current))
+                logger.debug("Write successful")
+            return True
+        except Exception as e:
+            logger.error(f"Write to charge rate failed: {e}")
+        return False

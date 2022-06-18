@@ -1,7 +1,10 @@
 {
-    "name": "Plugin name",
-    "author": "Plugin author",
+    "name": "Charge Rate Limit",
+    "author": "Tyler Hall",
     "main_view_html": "main_view.html",
     "tile_view_html": "",
-    "flags": ["_hot_reload", "_root"]
+    "flags": [
+        "root",
+        "debug"
+    ]
 }
